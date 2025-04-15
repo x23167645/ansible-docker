@@ -30,6 +30,12 @@
     src: ../../Dockerfile
     dest: /opt/myapp/Dockerfile
 
+- name: Delete the old Docker image if it exists
+  community.docker.docker_image:
+    name: flaskapp
+    tag: latest
+    state: absent
+
 # Build the Docker image on remote
 - name: Build Docker image on remote
   community.docker.docker_image:
