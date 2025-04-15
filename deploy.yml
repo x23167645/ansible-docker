@@ -1,0 +1,4 @@
+- hosts: appserver
+  become: yes
+  roles:
+    - docker_app

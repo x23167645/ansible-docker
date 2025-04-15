@@ -1,0 +1,39 @@
+# Create the app directory on remote
+- name: Create app directory on remote
+  file:
+    path: /opt/myapp
+    state: directory
+    mode: '0755'
+
+# Copy app.py to the remote app directory
+- name: Copy app.py to the remote app directory
+  copy:
+    src: ../../app/app.py
+    dest: /opt/myapp/app.py
+
+# Copy Dockerfile to the remote app directory
+- name: Copy Dockerfile to the remote app directory
+  copy:
+    src: ../../Dockerfile
+    dest: /opt/myapp/Dockerfile
+
+# Build the Docker image on remote
+- name: Build Docker image on remote
+  community.docker.docker_image:
+    name: flaskapp
+    tag: latest
+    state: present
+    source: build
+    build:
+      path: /opt/myapp
+      dockerfile: /opt/myapp/Dockerfile
+
+# Run Docker container from flaskapp image
+- name: Run Docker container from flaskapp image
+  community.docker.docker_container:
+    name: flaskapp-container
+    image: flaskapp:latest
+    state: started
+    restart_policy: always
+    published_ports:
+      - "5000:5000"
