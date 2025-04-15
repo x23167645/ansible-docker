@@ -40,7 +40,7 @@
     build:
       path: /opt/myapp
       dockerfile: /opt/myapp/Dockerfile
-      extra_args: "--no-cache"
+    nocache: true
 
 # Run a new Docker container from the flaskapp image
 - name: Run new Docker container from flaskapp image
