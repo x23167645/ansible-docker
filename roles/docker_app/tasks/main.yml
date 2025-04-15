@@ -1,3 +1,16 @@
+# Stop and remove any existing container
+- name: Stop the running flaskapp container (if exists)
+  community.docker.docker_container:
+    name: flaskapp-container
+    state: stopped
+  ignore_errors: yes
+
+- name: Remove the stopped flaskapp container
+  community.docker.docker_container:
+    name: flaskapp-container
+    state: absent
+  ignore_errors: yes
+
 # Create the app directory on remote
 - name: Create app directory on remote
   file:
@@ -28,8 +41,8 @@
       path: /opt/myapp
       dockerfile: /opt/myapp/Dockerfile
 
-# Run Docker container from flaskapp image
-- name: Run Docker container from flaskapp image
+# Run a new Docker container from the flaskapp image
+- name: Run new Docker container from flaskapp image
   community.docker.docker_container:
     name: flaskapp-container
     image: flaskapp:latest
@@ -37,3 +50,4 @@
     restart_policy: always
     published_ports:
       - "5000:5000"
+
